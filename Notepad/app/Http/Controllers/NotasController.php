@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Notas;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\NotasResource;
 use Illuminate\Http\Request;
 
 class NotasController extends Controller
@@ -15,7 +16,8 @@ class NotasController extends Controller
      */
     public function index()
     {
-        //
+        //Recuperamos todaas las notas
+        return NotasResource::collection(Notas::all());
     }
 
     /**
