@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Clases\Error;
 use App\Models\Notas;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NotasResource;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class NotasController extends Controller
@@ -28,7 +30,25 @@ class NotasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $notas = new Notas();
+
+        $notas->titulo = $request->input('titulo');
+        $notas->texto = $request->input('texto');
+        try
+        {
+            $notas->save();
+            $response = (new NotasResource($notas))
+                        ->response()
+                        ->setStatusCode(201);
+        } catch (QueryException $ex)
+        {
+            $mensaje = Error::errorMessage($ex);
+            $response = \response()
+                        ->json(['error' => $mensaje, 400]);
+        }
+
+
+        return $response;
     }
 
     /**
@@ -51,7 +71,24 @@ class NotasController extends Controller
      */
     public function update(Request $request, Notas $notas)
     {
-        //
+        $notas->titulo = $request->input('titulo');
+        $notas->texto = $request->input('texto');
+        try
+        {
+            $notas->save();
+            $response = (new NotasResource($notas))
+                        ->response()
+                        ->setStatusCode(201);
+        } catch (QueryException $ex)
+        {
+            $mensaje = Error::errorMessage($ex);
+            $response = \response()
+                        ->json(['error' => $mensaje, 400]);
+        }
+
+
+        return $response;
+
     }
 
     /**
@@ -62,6 +99,19 @@ class NotasController extends Controller
      */
     public function destroy(Notas $notas)
     {
-        //
+        try
+        {
+            $notas->delete();
+            $response = \response()
+            ->json(['error' => 'Registre esborrat correctament', 200]);
+
+        } catch (QueryException $ex) {
+            $mensaje = Error::errorMessage($ex);
+            $response = \response()
+            ->json(['error' => $mensaje, 400]);
+        }
+
+
+        return $response;
     }
 }
