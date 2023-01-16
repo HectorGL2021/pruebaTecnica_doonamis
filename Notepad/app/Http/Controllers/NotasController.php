@@ -18,8 +18,10 @@ class NotasController extends Controller
      */
     public function index()
     {
-        //Recuperamos todaas las notas
-        return NotasResource::collection(Notas::all());
+        $nota = Notas::all();
+        $notas = NotasResource::collection($nota);
+
+        return $notas;
     }
 
     /**
