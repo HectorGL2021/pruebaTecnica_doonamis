@@ -103,7 +103,7 @@ class NotasController extends Controller
         {
             $notas->delete();
             $response = \response()
-            ->json(['error' => 'Registre esborrat correctament', 200]);
+            ->json(['error' => 'Registro borrado correctamente', 200]);
 
         } catch (QueryException $ex) {
             $mensaje = Error::errorMessage($ex);
